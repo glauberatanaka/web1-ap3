@@ -61,8 +61,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="animated fadeIn" v-for="aluno in filteredCommands">
-                        <td class="animated flipInX">{{aluno.id}}</td>
+                    <tr class="animated fadeIn" v-for="aluno in filtered">
+                        <td class="animated flipInX text-primary"><b>{{aluno.id}}</b></td>
                         <td class="animated flipInX">{{aluno.rga}}</td>
                         <td class="animated flipInX">{{aluno.nome}}</td>
                     </tr>
@@ -74,8 +74,10 @@
 </div>
 <!-- Vue JS  -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-<!-- Axios js -->
+<!-- Axios JS -->
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- Loadash JS -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -86,11 +88,11 @@
             }
         },
         computed: {
-            filteredCommands: function () {
+            filtered: function () {
                 var _self = this;
-                return this.alunos.filter(function (group) {
+                return _.orderBy(this.alunos.filter(function (group) {
                     return group.nome.match(_self.search);
-                });
+                }), 'nome');
             }
         },
         mounted() {
