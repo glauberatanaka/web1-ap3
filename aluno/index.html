@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <title>Title</title>
-
+    <!-- Meta tag's -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <!-- Spectre CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.3/spectre.min.css">
-
     <!-- Animate CSS -->
     <link rel="stylesheet" href="animate.css">
 
@@ -45,7 +43,29 @@
                     <li class="divider" data-content="LINKS"></li>
                     <li class="menu-item"><a href="#menus">Slack</a></li>
                     <li class="menu-item"><a href="#menus">Hipchat</a></li>
-                    <li class="menu-item"><a href="#menus">Skype</a></li>
+                    <li class="menu-item">
+                        <a href="#add" v-on:click="modal=true">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                                 viewBox="0 0 492.32 492.32" style="width: 2em">
+                                <g>
+                                    <g>
+                                        <path d="M312.8,295.6c33.448-41.079,51.652-92.466,51.52-145.44c0-79.529-64.471-144-144-144s-144,64.471-144,144
+                                            c-0.393,55.522,19.589,109.261,56.16,151.04C80.077,313.472,33.378,343.139,0,385.36l25.12,19.84
+                                            c34.445-43.887,85.166-71.989,140.64-77.92c34.721,20.228,77.75,19.736,112-1.28h6.56c25.96-0.001,51.687,4.884,75.84,14.4
+                                            l11.52-30.24C352.764,302.786,332.973,297.892,312.8,295.6z M220.48,313.2c-74.4,0-114.24-95.2-114.24-163.04
+                                            C106.24,87.111,157.351,36,220.4,36s114.16,51.111,114.16,114.16C334.56,218.48,294.88,313.2,220.48,313.2z"/>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <polygon points="428.32,390.16 428.32,326.16 396.32,326.16 396.32,390.16 332.32,390.16 332.32,422.16 396.32,422.16
+                                            396.32,486.16 428.32,486.16 428.32,422.16 492.32,422.16 492.32,390.16 		"/>
+                                    </g>
+                                </g>
+                            </svg>
+                            Adicionar aluno
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="column col-7 col-ml-auto">
@@ -71,6 +91,44 @@
             </div>
         </div>
     </div>
+
+    <div class="modal" v-bind:class="{active:modal}">
+        <a href="#close" class="modal-overlay" aria-label="Close" v-on:click="modal=false"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close" v-on:click="modal=false"></a>
+                <div class="modal-title h5">Novo aluno</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="name">Nome</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <input class="form-input" type="text" id="name" placeholder="Qual seu nome?"
+                                       v-model="aluno.nome">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="rga">RGA</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <input class="form-input" type="text" id="rga" placeholder="Qual o número do seu RGA?"
+                                       v-model="aluno.rga">
+                            </div>
+                        </div>
+                        <button class="btn active" v-on:click="save">Salvar aluno</button>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer" v-if="error">
+                <div class="bg-error text-center">{{error}}</div>
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Vue JS  -->
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -79,12 +137,26 @@
 <!-- Loadash JS -->
 <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
 <script>
+    let axios_config = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        }
+    };
+
     new Vue({
         el: '#app',
         data() {
             return {
+                search: '',
                 alunos: [],
-                search: ''
+                aluno: {
+                    nome: '',
+                    rga: ''
+                },
+                error: false,
+                // Modal
+                modal: false,
             }
         },
         computed: {
@@ -99,6 +171,21 @@
             axios
                 .get('http://paw.ic.ufmt.br/jivago/alunos-api/public/index.php/alunos')
                 .then(response => (this.alunos = response.data))
+        },
+        methods: {
+            save: function (e) {
+                var _self = this;
+                axios.post('http://paw.ic.ufmt.br/jivago/alunos-api/public/index.php/alunos', this.aluno, {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                }).then(function (response) {
+                    _self.error = response;
+                    console.log(response);
+                }).catch(function (error) {
+                    this.error = error;
+                    console.log(error);
+                });
+            }
         }
     })
 </script>
