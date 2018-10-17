@@ -163,7 +163,7 @@
             filtered: function () {
                 var _self = this;
                 return _.orderBy(this.alunos.filter(function (group) {
-                    return group.nome.match(_self.search);
+                    return group.nome.toLowerCase().match(_self.search.toLowerCase());
                 }), 'nome');
             }
         },
