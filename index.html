@@ -8,58 +8,58 @@
     <title>WEB 1 - AP3</title>
 </head>
 <body>
-    <section class="container">
-        <header>
-            <button class="btn btn-success mt-5 mb-5" @click="addNovoFormAluno">
-                Novo Aluno
-            </button>
-        </header>
-        <main>
-            <div class="card mb-3" v-for="(aluno, index) in alunos">
-                <div class="card-body">
+
+<section class="container">
+    <header>
+        <button class="btn btn-success mt-5 mb-5" @click="addNovoFormAluno">
+            Novo Aluno
+        </button>
+    </header>
+    <main>
+        <div class="card mb-3" v-for="(aluno, index) in alunos">
+            <div class="card-body">
                     <span class="float-right" style="cursor:pointer" @click="deletarFormAluno(index)">
                         X
                     </span>
 
-                    <h4 class="card-title">
-                        Adicionar Aluno nº. {{ index }}
-                    </h4>
+                <h4 class="card-title">
+                    Adicionar Aluno nº. {{ index }}
+                </h4>
 
-                    <div class="aluno-form">
-                        <input type="text" class="form-control mb-2" placeholder="Nome" v-model="aluno.nome">
-                        <input type="text" class="form-control mb-2" placeholder="RGA" v-model="aluno.rga">
-                    </div>
+                <div class="aluno-form">
+                    <input type="text" class="form-control mb-2" placeholder="Nome" v-model="aluno.nome">
+                    <input type="text" class="form-control mb-2" placeholder="RGA" v-model="aluno.rga">
                 </div>
             </div>
-        </main>
+        </div>
+    </main>
+</section>
 
-    </section>
 
-
-    <script>
-        new Vue({
-            el: '.container',
-            data: {
-                alunos: [
-                    {
-                        nome: '',
-                        rga: ''
-                    }
-                ]
-            },
-            methods: {
-                addNovoFormAluno: function() {
-                    this.alunos.push({
-                        nome: '',
-                        rga: ''
-                    })
-                },
-
-                deletarFormAluno: function(index) {
-                    this.alunos.splice(index, 1)
+<script>
+    new Vue({
+        el: '.container',
+        data: {
+            alunos: [
+                {
+                    nome: '',
+                    rga: ''
                 }
+            ]
+        },
+        methods: {
+            addNovoFormAluno: function () {
+                this.alunos.push({
+                    nome: '',
+                    rga: ''
+                })
+            },
+
+            deletarFormAluno: function (index) {
+                this.alunos.splice(index, 1)
             }
-        });
-    </script>
+        }
+    });
+</script>
 </body>
 </html>

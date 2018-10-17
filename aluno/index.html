@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Spectre CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spectre.css/0.5.3/spectre.min.css">
+
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="animate.css">
+
+    <style>
+        body {
+
+        }
+
+        .container {
+            margin: 1px auto;
+            width: 80%;
+        }
+
+        .menu {
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="empty">
+        <div class="empty-icon"><i class="icon icon-3x icon-people"></i></div>
+        <p class="empty-title h5">You are not following anyone</p>
+        <p class="empty-subtitle">Start to meet new friends</p>
+        <div class="empty-action input-group input-inline">
+            <input class="form-input" type="text" placeholder="Procurar aluno" v-model="search">
+            <button class="btn btn-primary input-group-btn">Search</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="columns">
+            <div class="column col-4">
+                <ul class="menu">
+                    <li class="divider" data-content="LINKS"></li>
+                    <li class="menu-item"><a href="#menus">Slack</a></li>
+                    <li class="menu-item"><a href="#menus">Hipchat</a></li>
+                    <li class="menu-item"><a href="#menus">Skype</a></li>
+                </ul>
+            </div>
+            <div class="column col-7 col-ml-auto">
+                <table id="aluno" class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th colspan="3">Todos os alunos</th>
+                    </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">RGA</th>
+                        <th scope="col">Nome</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="animated fadeIn" v-for="aluno in filteredCommands">
+                        <td class="animated flipInX">{{aluno.id}}</td>
+                        <td class="animated flipInX">{{aluno.rga}}</td>
+                        <td class="animated flipInX">{{aluno.nome}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Vue JS  -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- Axios js -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                alunos: [],
+                search: ''
+            }
+        },
+        computed: {
+            filteredCommands: function () {
+                var _self = this;
+                return this.alunos.filter(function (group) {
+                    return group.nome.match(_self.search);
+                });
+            }
+        },
+        mounted() {
+            axios
+                .get('http://paw.ic.ufmt.br/jivago/alunos-api/public/index.php/alunos')
+                .then(response => (this.alunos = response.data))
+        }
+    })
+</script>
+</body>
+</html>
