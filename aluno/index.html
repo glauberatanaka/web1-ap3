@@ -138,10 +138,7 @@
 <script src="lodash.min.js"></script>
 <script>
     let axios_config = {
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-        }
+        headers: {}
     };
 
     new Vue({
@@ -162,8 +159,11 @@
         computed: {
             filtered: function () {
                 var _self = this;
+                this.alunos = _.reject(this.alunos, function (o) {
+                    return !o.nome;
+                });
                 return _.orderBy(this.alunos.filter(function (group) {
-                    return group.nome.toLowerCase().match(_self.search.toLowerCase());
+                    return group.nome.match(_self.search);
                 }), 'nome');
             }
         },
@@ -179,7 +179,7 @@
                     'Content-Type': 'application/json',
                     'Access-Control-Allow-Origin': '*'
                 }).then(function (response) {
-                    _self.error = response;
+
                     console.log(response);
                 }).catch(function (error) {
                     this.error = error;
