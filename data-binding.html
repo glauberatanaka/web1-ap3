@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="vue.js"></script>
+    <title>VueJS</title>
+</head>
+<body>
+    
+    <div id="app">
+        <input type="text" v-model="textInput">
+        <p>Texto: {{ textInput }}</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                textInput: ''
+            }
+        });
+    </script>
+</body>
+</html>
